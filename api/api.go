@@ -35,6 +35,7 @@ func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
 	bundles, err := a.client.FetchX509Bundles(a.ctx)
 	if err != nil {
 		str := "Error fetching bundles: " + err.Error()
+		log.Printf("%v", str)
 		w.Write([]byte(str))
 		return
 	}
@@ -49,9 +50,7 @@ func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("Error marshalling response: %v", err), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	// w.Write(jsonResponse)
 	log.Printf("Trust bundle: %s", jsonResponse)
-
-	w.Write([]byte("Get Trust Bundle button pressed"))
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/spirl/spiffe-demo-app/api"
 
@@ -13,15 +12,13 @@ import (
 
 const (
 	// Workload API unix socket path
-	WorkloadAPIPath = "unix:///tmp/agent.sock"
+	WorkloadAPIPath = "unix:///tmp/spirl/spiffe.sock"
 )
 
 func main() {
 
 	// Initialize SPIFFE Workload API client
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+	ctx := context.Background()
 	clientOptions := workloadapi.WithAddr(WorkloadAPIPath)
 
 	client, err := workloadapi.New(ctx, clientOptions)
