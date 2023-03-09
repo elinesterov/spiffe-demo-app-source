@@ -1,0 +1,56 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#content > * {
+  margin: 10px 0;
+}
+
+#output {
+  height: 200px;
+  width: 80%;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0062cc;
+}
+
+button:active {
+  background-color: #005cbf;
+}
+
+button:focus {
+  outline: none;
+}
+
+input[type="text"], textarea {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  resize: none;
+}
