@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
+	"path"
 
 	"github.com/spirl/spiffe-demo-app/api"
 
@@ -37,11 +39,13 @@ func main() {
 
 	// Serve index.html file at root path
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "public/index.html")
+		indexPath := path.Join(os.Getenv("KO_DATA_PATH"), "index.html")
+		http.ServeFile(w, r, indexPath)
 	})
 
 	// Serve static files from the "public" directory
-	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+	// mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir(os.Getenv("KO_DATA_PATH")))))
+	mux.Handle("/kodata/", http.StripPrefix("/kodata/", http.FileServer(http.Dir(os.Getenv("KO_DATA_PATH")))))
 
 	// Serve the API endpoints
 	mux.HandleFunc("/api/gettrustbundle", api.GetTrustBundleHandler)
