@@ -11,10 +11,10 @@ getJwtButton.addEventListener('click', async () => {
       throw new Error(error);
     }
     const jwt = await response.text();
-    output.value = jwt;
+    output.innerHTML = `<div>${jwt}</div>`;
   } catch (error) {
     console.error(error);
-    output.value = `Error: ${error.message}`;
+    output.innerHTML = `<div>Error: ${error.message}</div>`;
   }
 });
 
@@ -26,10 +26,10 @@ getX509Button.addEventListener('click', async () => {
       throw new Error(error);
     }
     const x509 = await response.text();
-    output.value = x509;
+    output.innerHTML = `<div>${x509}</div>`;
   } catch (error) {
     console.error(error);
-    output.value = `Error: ${error.message}`;
+    output.innerHTML = `<div>Error: ${error.message}</div>`;
   }
 });
 
@@ -41,9 +41,9 @@ getTrustBundleButton.addEventListener('click', async () => {
       throw new Error(error);
     }
     const trustBundle = await response.text();
-    output.value = trustBundle;
+    output.innerHTML = `<div>${trustBundle}</div>`;
   } catch (error) {
     console.error(error);
-    output.value = `Error: ${error.message}`;
+    output.innerHTML = `<div>Error: ${error.message}</div>`;
   }
 });

@@ -24,11 +24,11 @@ func NewAPI(ctx context.Context, client *workloadapi.Client) (*API, error) {
 }
 
 func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Get JWT button pressed"))
+	w.Write([]byte("Get JWT button pressed Get JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressed Get JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressed"))
 }
 
 func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Get X509 button pressed"))
+	w.Write([]byte("Get X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressed Get X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressed"))
 }
 
 func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
