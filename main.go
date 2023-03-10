@@ -21,9 +21,11 @@ func main() {
 
 	// Initialize SPIFFE Workload API client
 	ctx := context.Background()
-	clientOptions := workloadapi.WithAddr(WorkloadAPIPath)
-
-	client, err := workloadapi.New(ctx, clientOptions)
+	//  use SPIFFE_ENDPOINT_SOCKET environment variable that points
+	// to the Workload API socket instead of specifying it directly
+	// clientOptions := workloadapi.WithAddr(WorkloadAPIPath)
+	// client, err := workloadapi.New(ctx, clientOptions)
+	client, err := workloadapi.New(ctx)
 	if err != nil {
 		log.Fatalf("Unable to create client: %v", err)
 	}
@@ -44,7 +46,6 @@ func main() {
 	})
 
 	// Serve static files from the "public" directory
-	// mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir(os.Getenv("KO_DATA_PATH")))))
 	mux.Handle("/kodata/", http.StripPrefix("/kodata/", http.FileServer(http.Dir(os.Getenv("KO_DATA_PATH")))))
 
 	// Serve the API endpoints

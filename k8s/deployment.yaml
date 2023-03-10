@@ -22,8 +22,31 @@ spec:
       - name: spiffe-demo-app
         image: ko.local/github.com/spirl/spiffe-demo-app:latest
         imagePullPolicy: Never
+        env:
+          - name: SPIFFE_ENDPOINT_SOCKET
+            value: "unix:///spiffe-workload-api/spire-agent.sock"
+        volumeMounts:
+        - name: spiffe-workload-api
+          mountPath: /spiffe-workload-api
+          readOnly: true
         ports:
         - containerPort: 8080
+      - name: busybox
+        image: busybox
+        env:
+          - name: SPIFFE_ENDPOINT_SOCKET
+            value: "unix:///spiffe-workload-api/spire-agent.sock"
+        imagePullPolicy: Never
+        volumeMounts:
+        - name: spiffe-workload-api
+          mountPath: /spiffe-workload-api
+          readOnly: true
+        command: ['sleep', '3600']
+      volumes:
+      - name: spiffe-workload-api
+        csi:
+          driver: "csi.spiffe.io"
+          readOnly: true
 ---
 apiVersion: v1
 kind: Service
