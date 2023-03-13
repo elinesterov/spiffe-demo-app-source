@@ -2,9 +2,12 @@ package api
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/spiffe/go-spiffe/v2/svid/jwtsvid"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
 )
 
@@ -21,11 +24,31 @@ func NewAPI(ctx context.Context, client *workloadapi.Client) (*API, error) {
 }
 
 func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Get JWT button pressed Get JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressed Get JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressedGet JWT button pressed"))
+	svid, err := a.client.FetchJWTSVID(a.ctx, jwtsvid.Params{Audience: "example.org"})
+	if err != nil {
+		str := "Error fetching JWT SVID: " + err.Error()
+		log.Printf("%v", str)
+		http.Error(w, str, http.StatusInternalServerError)
+		return
+	}
+
+	// Convert the JWT-SVID to a JSON response
+	response := struct {
+		Token string `json:"token"`
+	}{
+		Token: svid.Marshal(),
+	}
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed to encode response as JSON: %v", err), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
 }
 
 func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Get X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressed Get X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressedGet X509 button pressed"))
+	w.Write([]byte("GetX509Handler"))
 }
 
 func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
