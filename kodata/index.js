@@ -2,6 +2,7 @@ const getJwtButton = document.getElementById('getJwtButton');
 const getX509Button = document.getElementById('getX509Button');
 const getTrustBundleButton = document.getElementById('getTrustBundleButton');
 const output = document.getElementById('output');
+const parsedCert = document.getElementById('parsed-cert');
 
 getJwtButton.addEventListener('click', async () => {
   try {
@@ -41,9 +42,30 @@ getTrustBundleButton.addEventListener('click', async () => {
       throw new Error(error);
     }
     const trustBundle = await response.text();
-    output.innerHTML = `<div>${trustBundle}</div>`;
+    output.textContent = trustBundle;
+    parsedCert.innerHTML = '';
+    const bundles = JSON.parse(trustBundle).bundles;
+    const parsedContainer = document.getElementById('parsed-cert');
+    // we use pv-cert-viewer to display the certificate
+    // https://github.com/PeculiarVentures/pv-certificates-viewer/blob/master/packages/webcomponents/README.md
+    const certViewer = document.createElement('peculiar-certificate-viewer');
+    const certData = [];
+
+    // Iterate over each trust domain in the bundles object
+    for (const trustDomain in bundles) {
+      if (Object.hasOwnProperty.call(bundles, trustDomain)) {
+        certData.push(bundles[trustDomain]);
+        console.log(`Trust Domain: ${trustDomain}`);
+        console.log(`Certificate Data: ${certData}`);
+      }
+    }
+
+    // Set the certificate property to the certificate data
+    certViewer.setAttribute('certificate', certData);
+    parsedContainer.appendChild(certViewer);
+
   } catch (error) {
     console.error(error);
-    output.innerHTML = `<div>Error: ${error.message}</div>`;
+    output.textContent = `Error: ${error.message}`;
   }
 });

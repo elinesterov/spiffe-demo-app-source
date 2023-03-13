@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>SPIFFE Demo App</title>
     <link rel="stylesheet" href="/kodata/styles.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@peculiar/certificates-viewer/dist/peculiar/peculiar.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@peculiar/certificates-viewer/dist/peculiar/peculiar.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@peculiar/certificates-viewer/dist/peculiar/peculiar.css">
   </head>
   <body>
     <div id="content">
@@ -14,6 +17,7 @@
       </div>
       <div class="center" id="output-container">
         <div id="output"></div>
+        <div id="parsed-cert"></div>
       </div>
     </div>
     <script src="/kodata/index.js"></script>
