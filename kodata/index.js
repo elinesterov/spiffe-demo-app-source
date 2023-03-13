@@ -4,8 +4,13 @@ const getTrustBundleButton = document.getElementById('getTrustBundleButton');
 const output = document.getElementById('output');
 const parsedCert = document.getElementById('parsed-cert');
 
+function clearParsedCert() {
+  parsedCert.innerHTML = '';
+}
+
 getJwtButton.addEventListener('click', async () => {
   try {
+    clearParsedCert();
     const response = await fetch('/api/getjwtsvid');
     if (!response.ok) {
       const error = await response.text();
@@ -21,6 +26,7 @@ getJwtButton.addEventListener('click', async () => {
 
 getX509Button.addEventListener('click', async () => {
   try {
+    clearParsedCert();
     const response = await fetch('/api/getx509svid');
     if (!response.ok) {
       const error = await response.text();
@@ -36,6 +42,7 @@ getX509Button.addEventListener('click', async () => {
 
 getTrustBundleButton.addEventListener('click', async () => {
   try {
+    clearParsedCert();
     const response = await fetch('/api/gettrustbundle');
     if (!response.ok) {
       const error = await response.text();
