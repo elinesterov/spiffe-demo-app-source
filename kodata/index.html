@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>SPIFFE Demo App</title>
+    <title>SPIFFE Helper App</title>
     <link rel="stylesheet" href="/kodata/styles.css">
     <script type="module" src="https://cdn.jsdelivr.net/npm/@peculiar/certificates-viewer/dist/peculiar/peculiar.esm.js"></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/@peculiar/certificates-viewer/dist/peculiar/peculiar.js"></script>
@@ -11,9 +11,9 @@
   <body>
     <div id="content">
       <div style="text-align:center;">
-        <button id="getJwtButton">Get JWT</button>
-        <button id="getX509Button">Get X509</button>
-        <button id="getTrustBundleButton">Get Trust Bundle</button>
+        <button id="getJwtButton">Show JWT-SVID</button>
+        <button id="getX509Button">Show X509-SVID</button>
+        <button id="getTrustBundleButton">Show X.509 Trust Bundle</button>
       </div>
       <div class="center" id="output-container">
         <div id="output"></div>
