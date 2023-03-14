@@ -69,11 +69,24 @@ getX509Button.addEventListener('click', async () => {
       const error = await response.text();
       throw new Error(error);
     }
-    const x509 = await response.text();
-    output.innerHTML = `<div>${x509}</div>`;
+
+    const res = await response.text();
+    // output.textContent = res;
+    parsedCert.innerHTML = '';
+    const certData = JSON.parse(res).cert;
+    const parsedContainer = document.getElementById('parsed-cert');
+    // we use pv-cert-viewer to display the certificate
+    // https://github.com/PeculiarVentures/pv-certificates-viewer/blob/master/packages/webcomponents/README.md
+    const certViewer = document.createElement('peculiar-certificate-viewer');
+
+    // Set the certificate property to the certificate data
+    certViewer.setAttribute('certificate', certData);
+    parsedContainer.appendChild(certViewer);
+
   } catch (error) {
     console.error(error);
-    output.innerHTML = `<div>Error: ${error.message}</div>`;
+    output.innerHTML = 
+    `<div>Error: ${error.message}</div>`;
   }
 });
 
@@ -86,26 +99,27 @@ getTrustBundleButton.addEventListener('click', async () => {
       throw new Error(error);
     }
     const trustBundle = await response.text();
-    output.textContent = trustBundle;
+    // output.textContent = trustBundle;
     parsedCert.innerHTML = '';
     const bundles = JSON.parse(trustBundle).bundles;
     const parsedContainer = document.getElementById('parsed-cert');
     // we use pv-cert-viewer to display the certificate
     // https://github.com/PeculiarVentures/pv-certificates-viewer/blob/master/packages/webcomponents/README.md
-    const certViewer = document.createElement('peculiar-certificate-viewer');
+    const certViewer = document.createElement('peculiar-certificates-viewer');
     const certData = [];
 
     // Iterate over each trust domain in the bundles object
     for (const trustDomain in bundles) {
       if (Object.hasOwnProperty.call(bundles, trustDomain)) {
-        certData.push(bundles[trustDomain]);
-        console.log(`Trust Domain: ${trustDomain}`);
-        console.log(`Certificate Data: ${certData}`);
+        let bundle = {};
+        bundle.name = trustDomain;
+        bundle.value = bundles[trustDomain];
+        certData.push(bundle);
       }
     }
 
     // Set the certificate property to the certificate data
-    certViewer.setAttribute('certificate', certData);
+    certViewer.certificates = certData;
     parsedContainer.appendChild(certViewer);
 
   } catch (error) {
