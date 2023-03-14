@@ -8,7 +8,6 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   margin-top: 10vh;
   height: 100%;
 }
@@ -22,8 +21,6 @@ body, html {
 }
 
 #output {
-  /* max-height: 50vh; */
-  /* width: 80%; */
   margin-top: 20px;
   overflow-y: auto;
   white-space: normal;
@@ -61,4 +58,29 @@ input[type="text"], textarea {
 
 textarea {
   resize: none;
+}
+
+#parsed-cert {
+  display: flex;
+  justify-content: space-between; /* Added to create space between columns */
+  width: 100%;
+}
+
+#parsed-cert > div {
+  width: calc(50% - 10px); /* Added to set the width of the columns */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#parsed-cert > div h3 {
+  margin-top: 0;
+}
+
+.token {
+  font-family: monospace;
+  font-size: 14px;
+  padding: 10px;
+  overflow-y: auto;
 }
