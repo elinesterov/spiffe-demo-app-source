@@ -21,7 +21,7 @@ spec:
       containers:
       - name: spiffe-demo-app
         image: ko.local/github.com/spirl/spiffe-demo-app:latest
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         env:
           - name: SPIFFE_ENDPOINT_SOCKET
             value: "unix:///spiffe-workload-api/spire-agent.sock"
@@ -36,7 +36,7 @@ spec:
         env:
           - name: SPIFFE_ENDPOINT_SOCKET
             value: "unix:///spiffe-workload-api/spire-agent.sock"
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: spiffe-workload-api
           mountPath: /spiffe-workload-api
