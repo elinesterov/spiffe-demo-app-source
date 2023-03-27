@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/spiffe/go-spiffe/v2/svid/jwtsvid"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
@@ -25,6 +26,7 @@ func NewAPI(ctx context.Context, client *workloadapi.Client) (*API, error) {
 }
 
 func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 	svid, err := a.client.FetchJWTSVID(a.ctx, jwtsvid.Params{Audience: "example.org"})
 	if err != nil {
 		str := "Error fetching JWT SVID: " + err.Error()
@@ -32,6 +34,9 @@ func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, str, http.StatusInternalServerError)
 		return
 	}
+
+	elapsed := time.Since(start)
+	log.Printf("JWT SVID fetched in %s", elapsed)
 
 	// Convert the JWT-SVID to a JSON response
 	response := struct {
@@ -53,6 +58,7 @@ func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 	svid, err := a.client.FetchX509SVID(a.ctx)
 	if err != nil {
 		str := "Error fetching X509 SVID: " + err.Error()
@@ -60,6 +66,8 @@ func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, str, http.StatusInternalServerError)
 		return
 	}
+	elapsed := time.Since(start)
+	log.Printf("X509 SVID fetched in %s", elapsed)
 
 	// Convert the X509-SVID to a JSON response
 	response := struct {
@@ -81,6 +89,7 @@ func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 	bundles, err := a.client.FetchX509Bundles(a.ctx)
 	if err != nil {
 		str := "Error fetching bundles: " + err.Error()
@@ -88,6 +97,8 @@ func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, str, http.StatusInternalServerError)
 		return
 	}
+	elapsed := time.Since(start)
+	log.Printf("Bundles fetched in %s", elapsed)
 
 	bundleMap := make(map[string]string)
 	for _, bundle := range bundles.Bundles() {
@@ -99,6 +110,8 @@ func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("Error marshalling response: %v", err), http.StatusInternalServerError)
 		return
 	}
+
+	// a.client.Close()
 	// TODO: hardcoded respose for now
 	// jsonResponse := []byte(`{"bundles":{"spiffe://example.org":"MIIDWDCCAkCgAwIBAgIRAOHjXwKDm65fwZvVEsKHwWowDQYJKoZIhvcNAQELBQAwNTELMAkGA1UEBhMCTkwxEDAOBgNVBAoTB0V4YW1wbGUxFDASBgNVBAMTC2V4YW1wbGUub3JnMB4XDTIzMDMwOTIxNTQ1MFoXDTIzMDMxMDIxNTUwMFowNTELMAkGA1UEBhMCTkwxEDAOBgNVBAoTB0V4YW1wbGUxFDASBgNVBAMTC2V4YW1wbGUub3JnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm2X4CAYhjwrN+SjJOdL7bdtm1u94C9w/RCJ6vEJHMqXlRWWFEXCA7fQP2QPcVCG5OaQkFmFWWuoMYd/laXyWq2S8TYXvCkl/mC6pRwSIYEf2p4Wy6bLab0g5FcgYgMiO0y+lvWpPPtigMKB7ebmeFIFgXhwwY5F7bFHvNu+qY7bX5VnsHJyg9Nht70ubLNfXdIfe8Aemj2v+u2pQTap3Ttz74B1jPTUWcg/c9DoyxrPBzW+qSY7SfnRI8UXv2/88sVutIvAgcWUyW1U0OmbPMbdLPgb5rQi9m2JC8NDqDfROzOiVIkBBak8RoyCti01WaLTvnuzVTYhhONpjt0N12QIDAQABo2MwYTAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUv3faet48gsuHXgYWKRLycTn5kbEwHwYDVR0RBBgwFoYUc3BpZmZlOi8vZXhhbXBsZS5vcmcwDQYJKoZIhvcNAQELBQADggEBAEzSotmqYcSiZBW279p3DKlXM2oFmaQjGxmo6t/e3NXDKM5RHVB0PDevTFVIcE0ph65J1+MEIagq3gDUS5OCUKQMHuDQ0GgViNJbO66LyrPkuavIg7sSHZMhTKAJDoF7LuebwcSuVlEEglKbTNWGYYzxNqckOkAVSnJPtFOlsxtdk+r3zOORAsXZ3+XxVMPQZ4WGIF8uPyFHvNm3noL0XZmhKLiPlYWIvHow59LG2Lz9zYwCK2+OjVeVVayxzRzHOXDvAs0CfTLU4Lx38m0CBEKPxYrr4swYWSeAj4BiiAOT4lZg4uyko0w5CfoBvKBBvfl6z46QHhNzjWDqUDFthAw="}}`)
 	log.Printf("Trust bundle: %s", jsonResponse)
