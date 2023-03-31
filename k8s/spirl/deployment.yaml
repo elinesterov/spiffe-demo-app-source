@@ -26,7 +26,7 @@ spec:
           - name: SPIFFE_ENDPOINT_SOCKET
             value: "unix:///spiffe-workload-api/agent.sock"
         volumeMounts:
-        - name: spirl-agent-socket
+        - name: spirl-agent-socket-dir
           mountPath: /spiffe-workload-api
           readOnly: false
         ports:
@@ -39,24 +39,14 @@ spec:
             value: "unix:///spiffe-workload-api/agent.sock"
         imagePullPolicy: IfNotPresent
         volumeMounts:
-          - name: spirl-agent-socket
+          - name: spirl-agent-socket-dir
             mountPath: /spiffe-workload-api
-            readOnly: false
+            readOnly: true
       volumes:
-      - name: spirl-agent-socket
-        hostPath:
-          path: /run/spirl/sockets
-      #   volumeMounts:
-      #   - name: spiffe-workload-api
-      #     mountPath: /spiffe-workload-api
-      #     readOnly: true
-      #   command: ['sleep', '3600']
-      # volumes:
-      # - name: spiffe-workload-api
-      #   csi:
-      #     driver: "csi.spiffe.io"
-      #     readOnly: true
-
+      - name: spirl-agent-socket-dir
+        csi:
+          driver: "csi.spiffe.io"
+          readOnly: true
 ---
 apiVersion: v1
 kind: Service
