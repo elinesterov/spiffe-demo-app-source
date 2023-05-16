@@ -20,8 +20,8 @@ spec:
     spec:
       containers:
       - name: spiffe-demo-app
-        image: ko.local/github.com/spirl/spiffe-demo-app:latest
-        imagePullPolicy: IfNotPresent
+        image: ko://github.com/spirl/spiffe-demo-app
+        imagePullPolicy: Always
         env:
           - name: SPIFFE_ENDPOINT_SOCKET
             value: "unix:///spiffe-workload-api/spire-agent.sock"
