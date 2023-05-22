@@ -21,10 +21,6 @@ func main() {
 
 	// Initialize SPIFFE Workload API client
 	ctx := context.Background()
-	//  use SPIFFE_ENDPOINT_SOCKET environment variable that points
-	// to the Workload API socket instead of specifying it directly
-	// clientOptions := workloadapi.WithAddr(WorkloadAPIPath)
-	// client, err := workloadapi.New(ctx, clientOptions)
 	client, err := workloadapi.New(ctx)
 	if err != nil {
 		log.Fatalf("Unable to create client: %v", err)
