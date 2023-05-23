@@ -26,5 +26,4 @@ jobs:
 
       - name: build and publish
         run: |
-          ko build --bare
-          KO_DOCKER_REPO=ghcr.io/elinesterov/spiffe-demo-app ko publish -P .
+          KO_DOCKER_REPO=ghcr.io/elinesterov/spiffe-demo-app ko build --bare
