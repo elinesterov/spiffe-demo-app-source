@@ -15,4 +15,10 @@ jobs:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
 
       - uses: ko-build/setup-ko@ace48d793556083a76f1e3e6068850c1f4a369aa # v0.6
-      - run: ko build
+
+      - name: build and publish
+        run: |
+          tag=$(echo ${{ github.ref }} | cut -c11-)  # get tag name without tags/refs/ prefix.
+          ko build \
+            --tags $tag \
+            --tag-only
