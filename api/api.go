@@ -85,7 +85,6 @@ func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
-	start := time.Now()
 	bundles, err := a.client.FetchX509Bundles(a.ctx)
 	if err != nil {
 		str := "Error fetching bundles: " + err.Error()
@@ -93,8 +92,6 @@ func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, str, http.StatusInternalServerError)
 		return
 	}
-	elapsed := time.Since(start)
-	log.Printf("Bundles fetched in %s", elapsed)
 
 	bundleMap := make(map[string]string)
 	for _, bundle := range bundles.Bundles() {
