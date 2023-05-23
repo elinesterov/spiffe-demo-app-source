@@ -26,4 +26,4 @@ jobs:
 
       - name: build and publish
         run: |
-          ko build 
+          ko build --bare
