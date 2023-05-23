@@ -18,7 +18,4 @@ jobs:
 
       - name: build and publish
         run: |
-          tag=$(echo ${{ github.ref }} | cut -c11-)  # get tag name without tags/refs/ prefix.
-          ko build \
-            --tags $tag \
-            --tag-only
+          ko build 
