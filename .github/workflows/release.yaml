@@ -19,4 +19,10 @@ jobs:
 
       - name: build and push
         uses: ko-build/setup-ko@ace48d793556083a76f1e3e6068850c1f4a369aa # v0.6
-      - run: ko build
+      
+      - name: release
+        run: |
+          tag=$(echo ${{ github.ref }} | cut -c11-)  # get tag name without tags/refs/ prefix.
+          ko build \
+            --tags $tag \
+            --tag-only
