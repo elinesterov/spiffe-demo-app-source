@@ -24,10 +24,4 @@
 *.swp
 .vscode/
 
-# Dynamically provisioned signers managed by Tilt
-/dev/signers
-
-# Dev environment debug artifacts
-signer.state
-
 *un~
