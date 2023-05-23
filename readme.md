@@ -23,3 +23,4 @@ Or if you want to generate the manifest to deploy the build
 ```
 make resolve_poc
 ```
+
