@@ -23,6 +23,7 @@ jobs:
       - name: release
         run: |
           tag=$(echo ${{ github.ref }} | cut -c11-)  # get tag name without tags/refs/ prefix.
+          KO_DOCKER_REPO=ghcr.io/elinesterov/spiffe-demo-app \
           ko build \
             --tags $tag \
             --tag-only
