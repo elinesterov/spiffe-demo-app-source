@@ -111,10 +111,13 @@ getTrustBundleButton.addEventListener('click', async () => {
     // Iterate over each trust domain in the bundles object
     for (const trustDomain in bundles) {
       if (Object.hasOwnProperty.call(bundles, trustDomain)) {
-        let bundle = {};
-        bundle.name = trustDomain;
-        bundle.value = bundles[trustDomain];
-        certData.push(bundle);
+        // Create a new object for each trust domain
+        for (const authority of bundles[trustDomain]) {
+          let bundle = {};
+          bundle.name = trustDomain;
+          bundle.value = authority;
+          certData.push(bundle);
+        }
       }
     }
 
