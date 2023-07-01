@@ -93,11 +93,15 @@ func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bundleMap := make(map[string]string)
+	bundleMap := make(map[string][]string)
 	for _, bundle := range bundles.Bundles() {
-		encoded := base64.StdEncoding.EncodeToString(bundle.X509Authorities()[0].Raw)
-		bundleMap[bundle.TrustDomain().IDString()] = encoded
+		trustDomain := bundle.TrustDomain().IDString()
+		for _, authority := range bundle.X509Authorities() {
+			encoded := base64.StdEncoding.EncodeToString(authority.Raw)
+			bundleMap[trustDomain] = append(bundleMap[trustDomain], encoded)
+		}
 	}
+
 	jsonResponse, err := json.MarshalIndent(map[string]interface{}{"bundles": bundleMap}, "", "  ")
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error marshalling response: %v", err), http.StatusInternalServerError)
