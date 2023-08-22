@@ -48,6 +48,7 @@ func main() {
 	mux.HandleFunc("/api/gettrustbundle", api.GetTrustBundleHandler)
 	mux.HandleFunc("/api/getjwtsvid", api.GetJwtHandler)
 	mux.HandleFunc("/api/getx509svid", api.GetX509Handler)
+	mux.HandleFunc("/api/getjwt", api.JWTProxyHandler)
 
 	handler := loggingMiddleware(mux)
 	server := &http.Server{
