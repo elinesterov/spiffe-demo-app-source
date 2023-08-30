@@ -84,7 +84,7 @@ func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResponse)
 }
 
-func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
+func (a *API) GetX509TrustBundleHandler(w http.ResponseWriter, r *http.Request) {
 	bundles, err := a.client.FetchX509Bundles(a.ctx)
 	if err != nil {
 		str := "Error fetching bundles: " + err.Error()
@@ -100,6 +100,37 @@ func (a *API) GetTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
 			encoded := base64.StdEncoding.EncodeToString(authority.Raw)
 			bundleMap[trustDomain] = append(bundleMap[trustDomain], encoded)
 		}
+	}
+
+	jsonResponse, err := json.MarshalIndent(map[string]interface{}{"bundles": bundleMap}, "", "  ")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error marshalling response: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("Trust bundle: %s", jsonResponse)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
+}
+
+func (a *API) GetJwtTrustBundleHandler(w http.ResponseWriter, r *http.Request) {
+	bundles, err := a.client.FetchJWTBundles(a.ctx)
+	if err != nil {
+		str := "Error fetching bundles: " + err.Error()
+		log.Printf("%v", str)
+		http.Error(w, str, http.StatusInternalServerError)
+		return
+	}
+
+	bundleMap := make(map[string]json.RawMessage)
+	for _, bundle := range bundles.Bundles() {
+		trustDomain := bundle.TrustDomain().IDString()
+		jwks, err := bundle.Marshal()
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error marshalling bundle: %v", err), http.StatusInternalServerError)
+			return
+		}
+		bundleMap[trustDomain] = jwks
 	}
 
 	jsonResponse, err := json.MarshalIndent(map[string]interface{}{"bundles": bundleMap}, "", "  ")

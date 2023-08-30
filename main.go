@@ -45,7 +45,8 @@ func main() {
 	mux.Handle("/kodata/", http.StripPrefix("/kodata/", http.FileServer(http.Dir(os.Getenv("KO_DATA_PATH")))))
 
 	// Serve the API endpoints
-	mux.HandleFunc("/api/gettrustbundle", api.GetTrustBundleHandler)
+	mux.HandleFunc("/api/getx509trustbundle", api.GetX509TrustBundleHandler)
+	mux.HandleFunc("/api/getjwttrustbundle", api.GetJwtTrustBundleHandler)
 	mux.HandleFunc("/api/getjwtsvid", api.GetJwtHandler)
 	mux.HandleFunc("/api/getx509svid", api.GetX509Handler)
 

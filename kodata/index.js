@@ -1,6 +1,7 @@
 const getJwtButton = document.getElementById('getJwtButton');
 const getX509Button = document.getElementById('getX509Button');
-const getTrustBundleButton = document.getElementById('getTrustBundleButton');
+const getX509TrustBundleButton = document.getElementById('getX509TrustBundleButton');
+const getJwtTrustBundleButton = document.getElementById('getJwtTrustBundleButton');
 let output = document.getElementById('output');
 let parsedCert = document.getElementById('parsed-cert');
 
@@ -85,15 +86,15 @@ getX509Button.addEventListener('click', async () => {
 
   } catch (error) {
     console.error(error);
-    output.innerHTML = 
-    `<div>Error: ${error.message}</div>`;
+    output.innerHTML =
+      `<div>Error: ${error.message}</div>`;
   }
 });
 
-getTrustBundleButton.addEventListener('click', async () => {
+getX509TrustBundleButton.addEventListener('click', async () => {
   try {
     clearOutput();
-    const response = await fetch('/api/gettrustbundle');
+    const response = await fetch('/api/getx509trustbundle');
     if (!response.ok) {
       const error = await response.text();
       throw new Error(error);
@@ -128,5 +129,45 @@ getTrustBundleButton.addEventListener('click', async () => {
   } catch (error) {
     console.error(error);
     output.textContent = `Error: ${error.message}`;
+  }
+});
+
+getJwtTrustBundleButton.addEventListener('click', async () => {
+  try {
+    clearOutput();
+    const response = await fetch('/api/getjwttrustbundle');
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error);
+    }
+    const jsonResponse = await response.json();
+
+    const bundleTable = document.createElement('table');
+
+    const headerRow = bundleTable.insertRow();
+    const tdHeader = document.createElement('th');
+    tdHeader.textContent = 'Trust Domain';
+    const jwksHeader = document.createElement('th');
+    jwksHeader.textContent = 'JWKS';
+    headerRow.appendChild(tdHeader)
+    headerRow.appendChild(jwksHeader)
+
+    // Iterate over each trust domain in the bundles object
+    for (const trustDomain in jsonResponse.bundles) {
+      const tr = bundleTable.insertRow();
+      tr.insertCell().textContent = trustDomain;
+
+      const jwks = document.createElement('pre');
+      jwks.textContent = JSON.stringify(jsonResponse.bundles[trustDomain], null, 2);
+      jwks.classList.add('token');
+      tr.insertCell().appendChild(jwks);
+    }
+
+    // Add to parsed-cert element
+    let parsedCert = document.getElementById('parsed-cert');
+    parsedCert.appendChild(bundleTable);
+  } catch (error) {
+    console.error(error);
+    output.innerHTML = `<div>Error: ${error.message}</div>`;
   }
 });
