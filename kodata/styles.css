@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -12,7 +13,7 @@ body, html {
   height: 100%;
 }
 
-#content > * {
+#content>* {
   margin: 10px 0;
 }
 
@@ -50,7 +51,8 @@ button:focus {
   outline: none;
 }
 
-input[type="text"], textarea {
+input[type="text"],
+textarea {
   padding: 10px;
   font-size: 16px;
   border-radius: 5px;
@@ -63,20 +65,35 @@ textarea {
 
 #parsed-cert {
   display: flex;
-  justify-content: space-between; /* Added to create space between columns */
+  justify-content: space-between;
+  /* Added to create space between columns */
   width: 100%;
 }
 
-#parsed-cert > div {
-  width: calc(50% - 10px); /* Added to set the width of the columns */
+#parsed-cert>div {
+  width: calc(50% - 10px);
+  /* Added to set the width of the columns */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
 }
 
-#parsed-cert > div h3 {
+#parsed-cert>div h3 {
   margin-top: 0;
+}
+
+#parsed-cert>table {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  border-spacing: 0px;
+}
+
+#parsed-cert>table td,
+#parsed-cert>table th {
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 
 .token {
