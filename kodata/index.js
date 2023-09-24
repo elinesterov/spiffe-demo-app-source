@@ -143,9 +143,11 @@ getJwtTrustBundleButton.addEventListener('click', async () => {
     const jsonResponse = await response.json();
 
     const bundleTable = document.createElement('table');
+    bundleTable.style.cssText = 'width: 100%;';
 
     const headerRow = bundleTable.insertRow();
     const tdHeader = document.createElement('th');
+    tdHeader.style.cssText = 'max-width: 30%; white-space: nowrap;';
     tdHeader.textContent = 'Trust Domain';
     const jwksHeader = document.createElement('th');
     jwksHeader.textContent = 'JWKS';
@@ -155,11 +157,14 @@ getJwtTrustBundleButton.addEventListener('click', async () => {
     // Iterate over each trust domain in the bundles object
     for (const trustDomain in jsonResponse.bundles) {
       const tr = bundleTable.insertRow();
-      tr.insertCell().textContent = trustDomain;
+      td = tr.insertCell()
+      td.textContent = trustDomain;
+      td.style.cssText = 'max-width: 30%; white-space: nowrap';
 
       const jwks = document.createElement('pre');
       jwks.textContent = JSON.stringify(jsonResponse.bundles[trustDomain], null, 2);
       jwks.classList.add('token');
+      jwks.style.cssText = 'word-break: break-all; white-space: break-spaces; overflow-wrap: break-word;';
       tr.insertCell().appendChild(jwks);
     }
 
