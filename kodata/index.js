@@ -72,9 +72,10 @@ getX509Button.addEventListener('click', async () => {
     }
 
     const res = await response.text();
-    // output.textContent = res;
+
     parsedCert.innerHTML = '';
     const certData = JSON.parse(res).cert;
+    console.log("-----BEGIN PRIVATE KEY-----\n"+JSON.parse(res).key+"\n-----END PRIVATE KEY-----\n");
     const parsedContainer = document.getElementById('parsed-cert');
     // we use pv-cert-viewer to display the certificate
     // https://github.com/PeculiarVentures/pv-certificates-viewer/blob/master/packages/webcomponents/README.md

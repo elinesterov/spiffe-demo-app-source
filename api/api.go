@@ -73,11 +73,21 @@ func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
 	elapsed := time.Since(start)
 	log.Printf("X509 SVID fetched in %s", elapsed)
 
+	cert, key, err := svid.MarshalRaw()
+	if err != nil {
+		str := "Error marshalling X509 SVID: " + err.Error()
+		log.Printf("%v", str)
+		http.Error(w, str, http.StatusInternalServerError)
+		return
+	}
+
 	// Convert the X509-SVID to a JSON response
 	response := struct {
 		Cert string `json:"cert"`
+		Key  string `json:"key"`
 	}{
-		Cert: base64.StdEncoding.EncodeToString((svid.Certificates[0].Raw)),
+		Cert: base64.StdEncoding.EncodeToString(cert),
+		Key:  base64.StdEncoding.EncodeToString(key),
 	}
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
