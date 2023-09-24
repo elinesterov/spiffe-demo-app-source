@@ -27,7 +27,13 @@ func NewAPI(ctx context.Context, client *workloadapi.Client) (*API, error) {
 
 func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
-	svid, err := a.client.FetchJWTSVID(a.ctx, jwtsvid.Params{Audience: "example.org"})
+	svid, err := a.client.FetchJWTSVID(a.ctx, jwtsvid.Params{
+		Audience: "spirl.com",
+		ExtraAudiences: []string{
+			"spiffe://example.org/foo",
+			"spiffe://acme.com/bar",
+		},
+	})
 	if err != nil {
 		str := "Error fetching JWT SVID: " + err.Error()
 		log.Printf("%v", str)
@@ -67,11 +73,21 @@ func (a *API) GetX509Handler(w http.ResponseWriter, r *http.Request) {
 	elapsed := time.Since(start)
 	log.Printf("X509 SVID fetched in %s", elapsed)
 
+	cert, key, err := svid.MarshalRaw()
+	if err != nil {
+		str := "Error marshalling X509 SVID: " + err.Error()
+		log.Printf("%v", str)
+		http.Error(w, str, http.StatusInternalServerError)
+		return
+	}
+
 	// Convert the X509-SVID to a JSON response
 	response := struct {
 		Cert string `json:"cert"`
+		Key  string `json:"key"`
 	}{
-		Cert: base64.StdEncoding.EncodeToString((svid.Certificates[0].Raw)),
+		Cert: base64.StdEncoding.EncodeToString(cert),
+		Key:  base64.StdEncoding.EncodeToString(key),
 	}
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
