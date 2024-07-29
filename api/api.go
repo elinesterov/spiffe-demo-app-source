@@ -25,6 +25,17 @@ func NewAPI(ctx context.Context, client *workloadapi.Client) (*API, error) {
 	}, nil
 }
 
+// HealthCheckHandler is a simple health check handler that returns a 200 OK status
+// if server can get the X.509 SVID from the Workload API client.
+func (a *API) HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	_, err := a.client.FetchX509SVID(a.ctx)
+	if err != nil {
+		http.Error(w, "Error fetching X.509 SVID", http.StatusServiceUnavailable)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
 func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	svid, err := a.client.FetchJWTSVID(a.ctx, jwtsvid.Params{
