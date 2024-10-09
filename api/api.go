@@ -40,10 +40,10 @@ func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	svid, err := a.client.FetchJWTSVID(a.ctx, jwtsvid.Params{
 		Audience: "spirl.com",
-		ExtraAudiences: []string{
-			"spiffe://example.org/foo",
-			"spiffe://acme.com/bar",
-		},
+	//	ExtraAudiences: []string{
+	//		"spiffe://example.org/foo",
+	//		"spiffe://acme.com/bar",
+	//	},
 	})
 	if err != nil {
 		str := "Error fetching JWT SVID: " + err.Error()
