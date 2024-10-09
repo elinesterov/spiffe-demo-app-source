@@ -39,7 +39,7 @@ func (a *API) HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 func (a *API) GetJwtHandler(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	svid, err := a.client.FetchJWTSVID(a.ctx, jwtsvid.Params{
-		Audience: "spiffe://mywicklow.com/kind-kind/ns/spiffe-demo/sa/spiffe-demo-app",
+		Audience: "https://adfs.mydomain2.com/adfs/oauth2/token",
 	//	ExtraAudiences: []string{
 	//		"spiffe://example.org/foo",
 	//		"spiffe://acme.com/bar",
