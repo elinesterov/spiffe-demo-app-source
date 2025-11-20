@@ -6,13 +6,32 @@ let output = document.getElementById('output');
 let parsedCert = document.getElementById('parsed-cert');
 
 function clearOutput() {
-  output.innerHTML = `<div></div>`;
+  output.innerHTML = '';
   parsedCert.innerHTML = '';
+}
+
+function setLoading(button, isLoading) {
+  const buttonText = button.querySelector('.button-text');
+  const buttonLoader = button.querySelector('.button-loader');
+
+  if (isLoading) {
+    buttonText.style.display = 'none';
+    buttonLoader.style.display = 'inline-block';
+    button.disabled = true;
+    button.style.opacity = '0.7';
+  } else {
+    buttonText.style.display = 'inline';
+    buttonLoader.style.display = 'none';
+    button.disabled = false;
+    button.style.opacity = '1';
+  }
 }
 
 getJwtButton.addEventListener('click', async () => {
   try {
     clearOutput();
+    setLoading(getJwtButton, true);
+
     const response = await fetch('/api/getjwtsvid');
     if (!response.ok) {
       const error = await response.text();
@@ -25,17 +44,12 @@ getJwtButton.addEventListener('click', async () => {
     const encodedContainer = document.createElement('div');
     const decodedContainer = document.createElement('div');
 
-    // Set CSS properties for container elements
-    encodedContainer.style.cssText = 'float:left; max-width:50%;';
-    decodedContainer.style.cssText = 'float:right; width:50%;';
-
     // Display encoded JWT in first column
     const encodedHeader = document.createElement('h3');
     encodedHeader.textContent = 'Encoded';
 
     const encodedText = document.createElement('div');
     encodedText.classList.add('token');
-    encodedText.style.wordWrap = 'break-word';
     encodedText.textContent = token;
 
     encodedContainer.appendChild(encodedHeader);
@@ -59,12 +73,16 @@ getJwtButton.addEventListener('click', async () => {
   } catch (error) {
     console.error(error);
     output.innerHTML = `<div>Error: ${error.message}</div>`;
+  } finally {
+    setLoading(getJwtButton, false);
   }
 });
 
 getX509Button.addEventListener('click', async () => {
   try {
     clearOutput();
+    setLoading(getX509Button, true);
+
     const response = await fetch('/api/getx509svid');
     if (!response.ok) {
       const error = await response.text();
@@ -87,14 +105,17 @@ getX509Button.addEventListener('click', async () => {
 
   } catch (error) {
     console.error(error);
-    output.innerHTML =
-      `<div>Error: ${error.message}</div>`;
+    output.innerHTML = `<div>Error: ${error.message}</div>`;
+  } finally {
+    setLoading(getX509Button, false);
   }
 });
 
 getX509TrustBundleButton.addEventListener('click', async () => {
   try {
     clearOutput();
+    setLoading(getX509TrustBundleButton, true);
+
     const response = await fetch('/api/getx509trustbundle');
     if (!response.ok) {
       const error = await response.text();
@@ -130,12 +151,16 @@ getX509TrustBundleButton.addEventListener('click', async () => {
   } catch (error) {
     console.error(error);
     output.textContent = `Error: ${error.message}`;
+  } finally {
+    setLoading(getX509TrustBundleButton, false);
   }
 });
 
 getJwtTrustBundleButton.addEventListener('click', async () => {
   try {
     clearOutput();
+    setLoading(getJwtTrustBundleButton, true);
+
     const response = await fetch('/api/getjwttrustbundle');
     if (!response.ok) {
       const error = await response.text();
@@ -175,5 +200,7 @@ getJwtTrustBundleButton.addEventListener('click', async () => {
   } catch (error) {
     console.error(error);
     output.innerHTML = `<div>Error: ${error.message}</div>`;
+  } finally {
+    setLoading(getJwtTrustBundleButton, false);
   }
 });

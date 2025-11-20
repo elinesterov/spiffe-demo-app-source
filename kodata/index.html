@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>SPIFFE Helper App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPIFFE Identity Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/kodata/styles.css">
   <script type="module"
     src="https://cdn.jsdelivr.net/npm/@peculiar/certificates-viewer/dist/peculiar/peculiar.esm.js"></script>
@@ -12,18 +16,114 @@
 </head>
 
 <body>
-  <div id="content">
-    <div style="text-align:center;">
-      <button id="getJwtButton">Show JWT-SVID</button>
-      <button id="getX509Button">Show X509-SVID</button>
-      <button id="getX509TrustBundleButton">Show X.509 Trust Bundle</button>
-      <button id="getJwtTrustBundleButton">Show JWT Trust Bundle</button>
-    </div>
-    <div class="center" id="output-container">
-      <div id="output"></div>
-      <div id="parsed-cert"></div>
-    </div>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h1 class="logo-text">SPIFFE Identity Viewer</h1>
+        </div>
+        <p class="subtitle">Secure Production Identity Framework For Everyone</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Action Cards -->
+      <div class="action-cards">
+        <div class="action-card" id="jwtCard">
+          <div class="card-icon jwt-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 9H9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="card-title">JWT-SVID</h3>
+          <p class="card-description">View JSON Web Token SPIFFE Verifiable Identity Document</p>
+          <button class="card-button" id="getJwtButton">
+            <span class="button-text">View JWT-SVID</span>
+            <span class="button-loader" style="display: none;">
+              <span class="spinner"></span>
+            </span>
+          </button>
+        </div>
+
+        <div class="action-card" id="x509Card">
+          <div class="card-icon x509-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 10H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 6H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 14H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 18H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="card-title">X.509-SVID</h3>
+          <p class="card-description">View X.509 certificate SPIFFE Verifiable Identity</p>
+          <button class="card-button" id="getX509Button">
+            <span class="button-text">View X.509-SVID</span>
+            <span class="button-loader" style="display: none;">
+              <span class="spinner"></span>
+            </span>
+          </button>
+        </div>
+
+        <div class="action-card" id="x509BundleCard">
+          <div class="card-icon bundle-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.7088 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="card-title">X.509 Trust Bundle</h3>
+          <p class="card-description">View trusted X.509 certificate authorities</p>
+          <button class="card-button" id="getX509TrustBundleButton">
+            <span class="button-text">View Trust Bundle</span>
+            <span class="button-loader" style="display: none;">
+              <span class="spinner"></span>
+            </span>
+          </button>
+        </div>
+
+        <div class="action-card" id="jwtBundleCard">
+          <div class="card-icon jwt-bundle-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="card-title">JWT Trust Bundle</h3>
+          <p class="card-description">View trusted JWT signing keys (JWKS)</p>
+          <button class="card-button" id="getJwtTrustBundleButton">
+            <span class="button-text">View JWT Bundle</span>
+            <span class="button-loader" style="display: none;">
+              <span class="spinner"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Output Section -->
+      <div id="output-container">
+        <div id="output" class="error-message"></div>
+        <div id="parsed-cert" class="result-container"></div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Powered by SPIFFE/SPIRE</p>
+    </footer>
   </div>
+
   <script src="/kodata/index.js"></script>
 </body>
 
