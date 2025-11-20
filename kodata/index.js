@@ -6,24 +6,30 @@ let output = document.getElementById('output');
 let parsedCert = document.getElementById('parsed-cert');
 
 function clearOutput() {
-  output.innerHTML = '';
+  output.textContent = '';
   parsedCert.innerHTML = '';
 }
 
 function setLoading(button, isLoading) {
+  if (!button) return;
+
   const buttonText = button.querySelector('.button-text');
   const buttonLoader = button.querySelector('.button-loader');
 
+  if (!buttonText || !buttonLoader) return;
+
   if (isLoading) {
-    buttonText.style.display = 'none';
-    buttonLoader.style.display = 'inline-block';
+    buttonText.classList.add('hidden');
+    buttonLoader.classList.remove('hidden');
     button.disabled = true;
-    button.style.opacity = '0.7';
+    button.classList.add('button-loading');
+    button.setAttribute('aria-busy', 'true');
   } else {
-    buttonText.style.display = 'inline';
-    buttonLoader.style.display = 'none';
+    buttonText.classList.remove('hidden');
+    buttonLoader.classList.add('hidden');
     button.disabled = false;
-    button.style.opacity = '1';
+    button.classList.remove('button-loading');
+    button.setAttribute('aria-busy', 'false');
   }
 }
 
@@ -72,7 +78,7 @@ getJwtButton.addEventListener('click', async () => {
 
   } catch (error) {
     console.error(error);
-    output.innerHTML = `<div>Error: ${error.message}</div>`;
+    output.textContent = `Error: ${error.message}`;
   } finally {
     setLoading(getJwtButton, false);
   }
@@ -105,7 +111,7 @@ getX509Button.addEventListener('click', async () => {
 
   } catch (error) {
     console.error(error);
-    output.innerHTML = `<div>Error: ${error.message}</div>`;
+    output.textContent = `Error: ${error.message}`;
   } finally {
     setLoading(getX509Button, false);
   }
@@ -199,7 +205,7 @@ getJwtTrustBundleButton.addEventListener('click', async () => {
     parsedCert.appendChild(bundleTable);
   } catch (error) {
     console.error(error);
-    output.innerHTML = `<div>Error: ${error.message}</div>`;
+    output.textContent = `Error: ${error.message}`;
   } finally {
     setLoading(getJwtTrustBundleButton, false);
   }

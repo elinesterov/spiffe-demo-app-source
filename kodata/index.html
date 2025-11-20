@@ -18,10 +18,10 @@
 <body>
   <div class="app-container">
     <!-- Header -->
-    <header class="header">
+    <header class="header" aria-label="Site header">
       <div class="header-content">
         <div class="logo">
-          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SPIFFE Logo">
             <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -48,9 +48,9 @@
           </div>
           <h3 class="card-title">JWT-SVID</h3>
           <p class="card-description">View JSON Web Token SPIFFE Verifiable Identity Document</p>
-          <button class="card-button" id="getJwtButton">
+          <button class="card-button" id="getJwtButton" aria-live="polite" aria-busy="false">
             <span class="button-text">View JWT-SVID</span>
-            <span class="button-loader" style="display: none;">
+            <span class="button-loader hidden">
               <span class="spinner"></span>
             </span>
           </button>
@@ -67,9 +67,9 @@
           </div>
           <h3 class="card-title">X.509-SVID</h3>
           <p class="card-description">View X.509 certificate SPIFFE Verifiable Identity</p>
-          <button class="card-button" id="getX509Button">
+          <button class="card-button" id="getX509Button" aria-live="polite" aria-busy="false">
             <span class="button-text">View X.509-SVID</span>
-            <span class="button-loader" style="display: none;">
+            <span class="button-loader hidden">
               <span class="spinner"></span>
             </span>
           </button>
@@ -84,9 +84,9 @@
           </div>
           <h3 class="card-title">X.509 Trust Bundle</h3>
           <p class="card-description">View trusted X.509 certificate authorities</p>
-          <button class="card-button" id="getX509TrustBundleButton">
+          <button class="card-button" id="getX509TrustBundleButton" aria-live="polite" aria-busy="false">
             <span class="button-text">View Trust Bundle</span>
-            <span class="button-loader" style="display: none;">
+            <span class="button-loader hidden">
               <span class="spinner"></span>
             </span>
           </button>
@@ -102,9 +102,9 @@
           </div>
           <h3 class="card-title">JWT Trust Bundle</h3>
           <p class="card-description">View trusted JWT signing keys (JWKS)</p>
-          <button class="card-button" id="getJwtTrustBundleButton">
+          <button class="card-button" id="getJwtTrustBundleButton" aria-live="polite" aria-busy="false">
             <span class="button-text">View JWT Bundle</span>
-            <span class="button-loader" style="display: none;">
+            <span class="button-loader hidden">
               <span class="spinner"></span>
             </span>
           </button>
