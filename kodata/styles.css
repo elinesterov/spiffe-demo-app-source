@@ -311,13 +311,15 @@ html {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: var(--shadow-lg);
   animation: fadeIn 0.3s ease;
+  min-height: 200px;
 }
 
 .result-container:empty {
   display: none;
+  min-height: 0;
 }
 
 @keyframes fadeIn {
@@ -358,6 +360,8 @@ html {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
 }
 
 #parsed-cert > div h3::before {
@@ -366,6 +370,7 @@ html {
   height: 20px;
   background: var(--primary-color);
   border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .token {
@@ -376,10 +381,12 @@ html {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow-x: auto;
-  color: var(--text-secondary);
+  color: #cbd5e1;
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-all;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 /* ===== Table Styles ===== */
@@ -399,12 +406,14 @@ html {
   text-align: left;
   padding: 1rem;
   border-bottom: 2px solid var(--primary-color);
+  font-size: 0.95rem;
 }
 
 #parsed-cert > table td {
   padding: 1rem;
   border-bottom: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  color: #cbd5e1;
+  vertical-align: top;
 }
 
 #parsed-cert > table tr:last-child td {
@@ -419,9 +428,59 @@ html {
 peculiar-certificate-viewer,
 peculiar-certificates-viewer {
   width: 100%;
-  --peculiar-bg-color: var(--background-light);
-  --peculiar-text-color: var(--text-primary);
-  --peculiar-border-color: var(--border-color);
+  background: var(--card-bg) !important;
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: var(--text-primary) !important;
+}
+
+/* Force better contrast for certificate viewer text */
+peculiar-certificate-viewer *,
+peculiar-certificates-viewer * {
+  color: var(--text-primary) !important;
+}
+
+/* Style certificate viewer labels and values */
+peculiar-certificate-viewer .peculiar-certificate-viewer,
+peculiar-certificates-viewer .peculiar-certificates-viewer {
+  background: var(--background) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Certificate viewer table styling */
+peculiar-certificate-viewer table,
+peculiar-certificates-viewer table {
+  background: var(--background) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+peculiar-certificate-viewer td,
+peculiar-certificates-viewer td,
+peculiar-certificate-viewer th,
+peculiar-certificates-viewer th {
+  color: var(--text-primary) !important;
+  background: var(--background-light) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 0.75rem !important;
+}
+
+peculiar-certificate-viewer th,
+peculiar-certificates-viewer th {
+  background: var(--background) !important;
+  font-weight: 600 !important;
+}
+
+/* Certificate viewer labels */
+peculiar-certificate-viewer .label,
+peculiar-certificates-viewer .label {
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+/* Certificate viewer values */
+peculiar-certificate-viewer .value,
+peculiar-certificates-viewer .value {
+  color: var(--text-primary) !important;
 }
 
 /* ===== Footer ===== */
