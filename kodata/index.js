@@ -109,6 +109,15 @@ getX509Button.addEventListener('click', async () => {
     certViewer.setAttribute('certificate', certData);
     parsedContainer.appendChild(certViewer);
 
+    // Force visibility with inline styles after a short delay
+    setTimeout(() => {
+      const allElements = certViewer.querySelectorAll('*');
+      allElements.forEach(el => {
+        el.style.color = '#f1f5f9';
+        el.style.opacity = '1';
+      });
+    }, 100);
+
   } catch (error) {
     console.error(error);
     output.textContent = `Error: ${error.message}`;
@@ -153,6 +162,15 @@ getX509TrustBundleButton.addEventListener('click', async () => {
     // Set the certificate property to the certificate data
     certViewer.certificates = certData;
     parsedContainer.appendChild(certViewer);
+
+    // Force visibility with inline styles after a short delay
+    setTimeout(() => {
+      const allElements = certViewer.querySelectorAll('*');
+      allElements.forEach(el => {
+        el.style.color = '#f1f5f9';
+        el.style.opacity = '1';
+      });
+    }, 100);
 
   } catch (error) {
     console.error(error);

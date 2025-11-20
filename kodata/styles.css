@@ -431,34 +431,57 @@ peculiar-certificates-viewer {
   background: var(--card-bg) !important;
   padding: 1.5rem;
   border-radius: 12px;
-  color: var(--text-primary) !important;
 }
 
-/* Force better contrast for certificate viewer text */
+/* Force maximum contrast for all certificate viewer text */
+peculiar-certificate-viewer,
 peculiar-certificate-viewer *,
-peculiar-certificates-viewer * {
-  color: var(--text-primary) !important;
+peculiar-certificate-viewer *::before,
+peculiar-certificate-viewer *::after,
+peculiar-certificates-viewer,
+peculiar-certificates-viewer *,
+peculiar-certificates-viewer *::before,
+peculiar-certificates-viewer *::after {
+  color: #f1f5f9 !important;
+  background-color: transparent !important;
 }
 
-/* Style certificate viewer labels and values */
-peculiar-certificate-viewer .peculiar-certificate-viewer,
-peculiar-certificates-viewer .peculiar-certificates-viewer {
-  background: var(--background) !important;
-  color: var(--text-primary) !important;
+/* Override shadow DOM styles */
+peculiar-certificate-viewer::part(*),
+peculiar-certificates-viewer::part(*) {
+  color: #f1f5f9 !important;
 }
 
-/* Certificate viewer table styling */
+/* Force bright colors for common elements */
+peculiar-certificate-viewer div,
+peculiar-certificate-viewer span,
+peculiar-certificate-viewer p,
+peculiar-certificate-viewer td,
+peculiar-certificate-viewer th,
+peculiar-certificate-viewer label,
+peculiar-certificates-viewer div,
+peculiar-certificates-viewer span,
+peculiar-certificates-viewer p,
+peculiar-certificates-viewer td,
+peculiar-certificates-viewer th,
+peculiar-certificates-viewer label {
+  color: #f1f5f9 !important;
+  opacity: 1 !important;
+}
+
+/* Tables */
 peculiar-certificate-viewer table,
 peculiar-certificates-viewer table {
   background: var(--background) !important;
   border: 1px solid var(--border-color) !important;
+  width: 100% !important;
 }
 
 peculiar-certificate-viewer td,
 peculiar-certificates-viewer td,
 peculiar-certificate-viewer th,
 peculiar-certificates-viewer th {
-  color: var(--text-primary) !important;
+  color: #f1f5f9 !important;
   background: var(--background-light) !important;
   border: 1px solid var(--border-color) !important;
   padding: 0.75rem !important;
@@ -468,19 +491,57 @@ peculiar-certificate-viewer th,
 peculiar-certificates-viewer th {
   background: var(--background) !important;
   font-weight: 600 !important;
+  color: #fff !important;
 }
 
-/* Certificate viewer labels */
+/* Specific overrides for known classes */
 peculiar-certificate-viewer .label,
-peculiar-certificates-viewer .label {
-  color: var(--text-secondary) !important;
-  font-weight: 500 !important;
+peculiar-certificates-viewer .label,
+peculiar-certificate-viewer [class*="label"],
+peculiar-certificates-viewer [class*="label"] {
+  color: #818cf8 !important;
+  font-weight: 600 !important;
+  background: transparent !important;
 }
 
-/* Certificate viewer values */
 peculiar-certificate-viewer .value,
-peculiar-certificates-viewer .value {
-  color: var(--text-primary) !important;
+peculiar-certificates-viewer .value,
+peculiar-certificate-viewer [class*="value"],
+peculiar-certificates-viewer [class*="value"] {
+  color: #f1f5f9 !important;
+  background: transparent !important;
+}
+
+/* Headers and titles */
+peculiar-certificate-viewer h1,
+peculiar-certificate-viewer h2,
+peculiar-certificate-viewer h3,
+peculiar-certificate-viewer h4,
+peculiar-certificate-viewer h5,
+peculiar-certificate-viewer h6,
+peculiar-certificates-viewer h1,
+peculiar-certificates-viewer h2,
+peculiar-certificates-viewer h3,
+peculiar-certificates-viewer h4,
+peculiar-certificates-viewer h5,
+peculiar-certificates-viewer h6 {
+  color: #fff !important;
+  background: transparent !important;
+}
+
+/* Input and pre elements */
+peculiar-certificate-viewer pre,
+peculiar-certificate-viewer code,
+peculiar-certificates-viewer pre,
+peculiar-certificates-viewer code {
+  color: #f1f5f9 !important;
+  background: var(--background) !important;
+}
+
+/* Links */
+peculiar-certificate-viewer a,
+peculiar-certificates-viewer a {
+  color: #818cf8 !important;
 }
 
 /* ===== Footer ===== */
